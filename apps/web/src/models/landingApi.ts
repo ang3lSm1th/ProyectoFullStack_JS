@@ -33,7 +33,7 @@ async function fetchLandingFromApi(): Promise<{
 
 export const fetchLandingData = unstable_cache(
   fetchLandingFromApi,
-  ['portfolio-landing-data'],
+  ['portfolio-landing-data-v3'],
   {
     revalidate: LANDING_REVALIDATE_SECONDS,
     tags: ['landing', 'services', 'projects'],

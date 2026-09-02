@@ -6,6 +6,7 @@ export type GitHubRepoJson = {
   html_url: string;
   homepage: string | null;
   language: string | null;
+  languages?: Record<string, number>;
   topics?: string[];
   fork: boolean;
   archived: boolean;

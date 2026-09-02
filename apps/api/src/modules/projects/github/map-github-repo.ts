@@ -1,3 +1,4 @@
+import { buildTechStack } from './github-stack';
 import type { GitHubProject, GitHubRepoJson } from './github-repo.types';
 
 function humanizeRepoName(name: string): string {
@@ -12,11 +13,7 @@ function normalizeHomepage(homepage: string | null): string | null {
 }
 
 export function mapGitHubRepoToProject(repo: GitHubRepoJson): GitHubProject {
-  const topics = repo.topics ?? [];
-  const techStack = [repo.language, ...topics].filter(
-    (item): item is string => Boolean(item),
-  );
-  const uniqueStack = [...new Set(techStack)];
+  const techStack = buildTechStack(repo);
   const liveUrl = normalizeHomepage(repo.homepage);
   const summary =
     repo.description?.trim() || 'Repositorio en GitHub.';
@@ -25,7 +22,7 @@ export function mapGitHubRepoToProject(repo: GitHubRepoJson): GitHubProject {
     id: `gh-${repo.id}`,
     title: humanizeRepoName(repo.name),
     summary,
-    techStack: uniqueStack,
+    techStack,
     imageUrl: null,
     repoUrl: repo.html_url,
     liveUrl,

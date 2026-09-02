@@ -1,5 +1,7 @@
 export const SITE_NAME = 'Angel Sanchez';
 
+export const PROJECTS_PREVIEW_COUNT = 3;
+
 export const NAV_LINKS = [
   { href: '#inicio', label: 'Inicio' },
   { href: '#sobre-mi', label: 'Sobre mí' },
