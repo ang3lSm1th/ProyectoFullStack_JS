@@ -1,5 +1,8 @@
 const API_URL =
-  process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001/api/v1';
+  process.env.NEXT_PUBLIC_API_URL ??
+  (process.env.VERCEL
+    ? 'https://portfolio-api-tjj3.onrender.com/api/v1'
+    : 'http://localhost:3001/api/v1');
 
 export class ApiRequestError extends Error {
   constructor(
