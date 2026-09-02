@@ -1,0 +1,27 @@
+---
+description: Evitar duplicación de código salvo cuando aporte escalabilidad real
+alwaysApply: true
+---
+
+# DRY — No duplicar código
+
+- No copies lógica, tipos, validaciones ni llamadas API entre archivos.
+- Antes de duplicar, extrae a un lugar compartido:
+  - Frontend: `components/`, `viewmodels/`, `models/`, `shared/`
+  - Backend: `common/`, módulo de dominio, o `packages/shared`
+  - Monorepo: `packages/shared` si lo usan `web` y `api`
+- **Sí se permite “duplicar”** solo cuando la separación protege boundaries de escalabilidad:
+  - Contratos/DTOs por bounded context antes de microservicios
+  - Capas distintas (View vs ViewModel vs Model; Controller vs Service vs Repository)
+  - Apps independientes (`web` vs `api`) sin acoplar UI al NestJS
+- Si dudas entre DRY y boundary: prioriza el boundary y deja un TODO corto explicando por qué no se unificó.
+- Nunca copies un bloque “por si acaso”; reutiliza o abstrae con un nombre claro.
+
+```typescript
+// ❌ BAD — misma validación en dos sitios
+if (!email.includes('@')) throw new Error('email inválido');
+
+// ✅ GOOD — una sola regla reutilizable
+import { assertValidEmail } from '@/shared/validation/email';
+assertValidEmail(email);
+```

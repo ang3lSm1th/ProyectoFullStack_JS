@@ -1,0 +1,18 @@
+node_modules
+dist
+.next
+coverage
+*.log
+.env
+.env.local
+.env.*.local
+.cursor/mcp.json
+.DS_Store
+.turbo
+*.tsbuildinfo
+
+# Nested tooling
+apps/web/.next
+apps/api/dist
+apps/api/prisma/seed.js
+apps/api/prisma/seed.js.map

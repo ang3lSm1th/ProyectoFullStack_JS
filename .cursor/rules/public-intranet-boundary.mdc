@@ -1,0 +1,44 @@
+# Boundary — Portafolio público vs Intranet/CRM
+
+## Apps
+
+| App | Rol | Visitante |
+|-----|-----|-----------|
+| `apps/web` | Portafolio público (SEO, landing) | Sí |
+| `apps/intranet` | CMS / CRM interno (Fase 2+) | No — solo admin autenticado |
+| `apps/api` | API NestJS compartida | Solo endpoints públicos expuestos |
+
+**Nunca** mezclar rutas admin, login ni bandeja de leads dentro de `apps/web`.
+
+## API pública (sin auth)
+
+Solo lo necesario para la landing:
+
+- `GET /health`
+- `GET /projects` — solo lectura, datos publicados
+- `GET /services` — solo lectura, datos publicados
+- `POST /contact` — crear lead (rate limit + anti-duplicado)
+
+## API privada (Fase 2+, JWT)
+
+Todo lo demás bajo `/api/v1/admin/*`:
+
+- CRUD proyectos, servicios, leads
+- Auth login/refresh
+- Sin acceso anónimo
+
+## Frontend público (`apps/web`)
+
+- Datos de catálogo: **Server Components** + cache (`unstable_cache` / ISR). No `useEffect(() => fetch(...))` para listados.
+- Cliente: solo mutaciones explícitas (`POST /contact`) vía ViewModel.
+- No TanStack Query ni polling en la landing.
+
+## Intranet (`apps/intranet`)
+
+- Cliente HTTP propio hacia `/api/v1/admin/*`.
+- JWT en memoria/cookie httpOnly (no en localStorage si se puede evitar).
+- Tras publicar contenido, disparar revalidación del cache de `apps/web`.
+
+## Regla DRY
+
+Contratos compartidos en `packages/shared`. No duplicar DTOs entre web e intranet salvo boundary documentado.

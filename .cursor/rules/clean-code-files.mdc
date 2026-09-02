@@ -1,0 +1,32 @@
+---
+description: Clean Code — un archivo una responsabilidad, sin mezclar capas
+alwaysApply: true
+---
+
+# Clean Code — archivos limpios y sin mezclar capas
+
+- Cada archivo tiene **una responsabilidad** clara y un nombre que la describe.
+- No mezclar en el mismo archivo:
+  - Frontend: View (UI) + ViewModel (estado/comandos) + Model (HTTP/tipos)
+  - Backend: Controller + Service + Repository/Prisma + reglas de otro módulo
+- Funciones/métodos cortos, nombres intencionales, sin comentarios obvios.
+- Evitar “god files”: si crece de más, dividir por responsabilidad, no por capricho.
+- Side effects (fetch, DB, auth) viven en Model/Service; la UI solo presenta y dispara comandos del ViewModel.
+- Preferir composición y módulos Nest/MVVM del plan del proyecto sobre atajos que mezclen capas.
+
+```typescript
+// ❌ BAD — UI + fetch + reglas de negocio juntos
+export function ContactSection() {
+  const [msg, setMsg] = useState('');
+  async function send() {
+    if (!msg.trim()) return;
+    await fetch('/api/v1/contact', { method: 'POST', body: JSON.stringify({ msg }) });
+  }
+  return <form onSubmit={send}>...</form>;
+}
+
+// ✅ GOOD — capas separadas
+// views/ContactSection.tsx       → solo UI
+// viewmodels/useContactFormVM.ts → estado + submit()
+// models/contactApi.ts           → llamada HTTP
+```

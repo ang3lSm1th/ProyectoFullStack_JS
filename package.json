@@ -1,0 +1,22 @@
+{
+  "name": "portfolio-platform",
+  "private": true,
+  "packageManager": "pnpm@9.15.0",
+  "scripts": {
+    "dev": "pnpm -r --parallel --filter @portfolio/web --filter @portfolio/api run dev",
+    "dev:web": "pnpm --filter @portfolio/web dev",
+    "dev:api": "pnpm --filter @portfolio/api dev",
+    "build": "pnpm -r --filter @portfolio/web --filter @portfolio/api run build",
+    "start": "pnpm -r --parallel --filter @portfolio/web --filter @portfolio/api run start",
+    "lint": "pnpm -r --filter @portfolio/web --filter @portfolio/api run lint",
+    "db:up": "docker compose up -d",
+    "db:down": "docker compose down",
+    "ports:free": "powershell -ExecutionPolicy Bypass -File ./scripts/free-ports.ps1",
+    "db:setup": "powershell -ExecutionPolicy Bypass -File ./scripts/setup-local-postgres.ps1",
+    "build:api": "pnpm --filter @portfolio/api build",
+    "start:api": "pnpm --filter @portfolio/api start"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
