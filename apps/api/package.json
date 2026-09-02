@@ -7,7 +7,7 @@
   "license": "UNLICENSED",
   "scripts": {
     "dev": "nest build && nest start --watch",
-    "build": "prisma generate && nest build",
+    "build": "pnpm exec prisma generate && pnpm exec nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "node dist/main.js",
     "start:prod": "node dist/main.js",
